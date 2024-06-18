@@ -43,3 +43,8 @@ p {
     border-radius: 5px;
     margin: 0;
 }
+@media (min-width:440px) {
+    body{
+        text-align: center;
+    }
+}
