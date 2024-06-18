@@ -1,0 +1,45 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #343a40;
+}
+
+p {
+    color: #6c757d;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+#results {
+    font-size: 18px;
+    color: #343a40;
+}
+
+.word, .draggable-word {
+    display: inline-block;
+    margin: 5px;
+    padding:0px 10px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: move;
+}
+
+.dropzone, .dropzone-word {
+    background-color: #15ff00;
+    color: #000;
+    min-height: 25px;
+    max-height: 25px;
+    min-width: 100px;
+    display: inline-block;
+    border: 1px dashed #ced4da;
+    vertical-align: middle;
+    border-radius: 5px;
+    margin: 0;
+}
