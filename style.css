@@ -1,5 +1,5 @@
 body {
-    background-color: #f8f9fa;
+    background-image: url(img/Petrol\ Blue-trellis-pattern.png);
     font-family: Arial, sans-serif;
     font-size: larger;
     -webkit-user-select: none;
@@ -7,6 +7,9 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+.container{
+    background-color: white;
 }
 
 h1 {
@@ -76,5 +79,11 @@ label:hover {
 @media (min-width:440px) {
     body{
         text-align: center;
+    }
+    .table{
+        text-align: start;
+    }
+    img{
+        width: 35%;
     }
 }

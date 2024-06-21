@@ -267,46 +267,26 @@ window.onbeforeunload = function() {
     }
 }
 
-//===========================================================================================
+// //===========================================================================================
 
 
-// onclick Submit progress button it will be save result in the browser storage
-document.getElementById("submit").addEventListener("click", function() {
-    //save totalScore in the browser storage
-    localStorage.setItem("totalScore", numCorrect);
-})
-// when the page is loaded 
-window.onload = function() {
-    //check for totalScore if it is 0 send a welcome alert
-    if (localStorage.getItem("totalScore") === null) {
-        //send a welcome alert
-        alert("Welcome to the quiz! Good luck!");
-    } //check for totalScore if it is 50 send an alert
-    if (localStorage.getItem("totalScore") === "50") {
-        alert("Congratulations! You scored 50% on the quiz. You're halfway there!");
-    } //check for totalScore if it is above 50 send an alert
-    if (localStorage.getItem("totalScore") > "50") {
-        //telling the user that they passed and if the wish to retake to lesson give them a button that deletes the current totalScore from the storage
-        alert("Congratulations! You passed the quiz with a score of " + localStorage.getItem("totalScore"))
-        const alertOverlay = document.createElement('div');
-        const alertBox = document.createElement('div');
-        alertOverlay.classList.add('alert-overlay');
-        alertBox.classList.add('alert-box');
-        alertBox.innerHTML = `
-            <h2>My Custom Header</h2>
-            <p>Popup text</p>
-            <button onclick="handleRetake()">Retake</button>
-        `;
-        document.body.appendChild(alertOverlay);
-        document.body.appendChild(alertBox);
-    }
-}
-function handleRetake() {
-    localStorage.removeItem("totalScore");
-}
+// // onclick Submit progress button it will be save result in the browser storage
+// document.getElementById("submit").addEventListener("click", function() {
+//     //save totalScore in the browser storage
+//     localStorage.setItem("totalScore", numCorrect);
+// })
+// // when the page is loaded 
+// window.onload = function() {
+//     //check for totalScore if it is 0 send a welcome alert
+//     if (localStorage.getItem("totalScore") === null) {
+//         //send a welcome alert
+//         alert("Welcome to the quiz! Good luck!");
+//     } else if (localStorage.getItem("totalScore") === "50") {
+//         alert("Congratulations! You scored 50% on the quiz. You're halfway there!");
+//     }
+// }
 
-
-//===========================================================================================
+// //===========================================================================================
 
 
 // Calculate the total score and answers correct with times spent
