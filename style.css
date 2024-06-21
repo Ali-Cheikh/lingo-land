@@ -30,10 +30,19 @@ p {
     border-radius: 5px;
     cursor: move;
 }
-/*When hovering or dragging on the words they will scale up until released in the dropzone */
+/*while hovering or dragging on the words they will scale up until released in the dropzone */
 .word:hover, .draggable-word:hover {
-    transform: scale(1.1);
-    }
+    transform: scale(1.3);
+    transition: 0.5s;
+    margin: 1;
+}
+.draggable-word:active{
+    transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -o-transform: scale(1.3);
+}
 
 .dropzone, .dropzone-word {
     background-color: #15ff00;
