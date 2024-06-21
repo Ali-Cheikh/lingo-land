@@ -100,7 +100,7 @@ function buildQuiz() {
                         .split("___")
                         .join(
                             `<div class="dropzone" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`
-                        )} <span class="checkmark" id="checkmark${index}"></span></td>
+                        )} <span class="" id="${index}"></span></td>
             </tr>`
             )
             .join("");
@@ -134,7 +134,7 @@ function buildQuiz() {
                 (definition, index) =>
                     `<div class="definition mb-3">
                 <p>${index + 1}. ${definition.text}</p>
-                <div class="dropzone-word" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark${index}"></span>
+                <div class="dropzone-word" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="" id="${index}"></span>
             </div>`
             )
             .join("");
@@ -259,17 +259,55 @@ function showNextQuestion() {
         document.getElementById("submit").classList.remove("d-none");
     }
 }
+
 // Disable reload page when the quiz starts until its over
 window.onbeforeunload = function() {
-    if (currentQuestionIndex < questions.length) {
+    if (currentQuestionIndex < questions.length || localStorage.getItem("totalScore") === null) {
         return "You will lose your progress if you leave this page.";
     }
 }
+
+//===========================================================================================
+
+
 // onclick Submit progress button it will be save result in the browser storage
 document.getElementById("submit").addEventListener("click", function() {
     //save totalScore in the browser storage
     localStorage.setItem("totalScore", numCorrect);
 })
+// when the page is loaded 
+window.onload = function() {
+    //check for totalScore if it is 0 send a welcome alert
+    if (localStorage.getItem("totalScore") === null) {
+        //send a welcome alert
+        alert("Welcome to the quiz! Good luck!");
+    } //check for totalScore if it is 50 send an alert
+    if (localStorage.getItem("totalScore") === "50") {
+        alert("Congratulations! You scored 50% on the quiz. You're halfway there!");
+    } //check for totalScore if it is above 50 send an alert
+    if (localStorage.getItem("totalScore") > "50") {
+        //telling the user that they passed and if the wish to retake to lesson give them a button that deletes the current totalScore from the storage
+        alert("Congratulations! You passed the quiz with a score of " + localStorage.getItem("totalScore"))
+        const alertOverlay = document.createElement('div');
+        const alertBox = document.createElement('div');
+        alertOverlay.classList.add('alert-overlay');
+        alertBox.classList.add('alert-box');
+        alertBox.innerHTML = `
+            <h2>My Custom Header</h2>
+            <p>Popup text</p>
+            <button onclick="handleRetake()">Retake</button>
+        `;
+        document.body.appendChild(alertOverlay);
+        document.body.appendChild(alertBox);
+    }
+}
+function handleRetake() {
+    localStorage.removeItem("totalScore");
+}
+
+
+//===========================================================================================
+
 
 // Calculate the total score and answers correct with times spent
 function showResults() {
@@ -314,12 +352,6 @@ function drop(event) {
     const questionIndex = event.target.id.replace("dropzone", "");
     const sentence = questions[currentQuestionIndex].sentences[questionIndex];
     const word = element.textContent.trim();
-
-    if (word === sentence.correctWord) {
-        document.getElementById(`${questionIndex}`).textContent = " ✓";
-    } else {
-        document.getElementById(`checkmark${questionIndex}`).textContent = " ✗";
-    }
 }
 
 function updateCounter() {
