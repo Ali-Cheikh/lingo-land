@@ -1,6 +1,7 @@
 body {
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
+    font-size: larger;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     -moz-user-select: none;
@@ -14,6 +15,7 @@ h1 {
 
 p {
     color: #6c757d;
+    font-size: larger;
 }
 
 .card {
@@ -28,7 +30,7 @@ p {
 
 .word, .draggable-word {
     display: inline-block;
-    margin: 5px;
+    margin: 4px;
     padding:0px 10px;
     background-color: #007bff;
     color: white;
@@ -37,9 +39,8 @@ p {
 }
 /*while hovering or dragging on the words they will scale up until released in the dropzone */
 .word:hover, .draggable-word:hover {
-    transform: scale(1.3);
-    transition: 0.5s;
-    margin: 1;
+    transform: scale(1.3) rotate(-10deg);
+    transition: 0.2s;
 }
 .draggable-word:active{
     transform: scale(1.3);
@@ -48,9 +49,9 @@ p {
 .dropzone, .dropzone-word {
     background-color: #15ff00;
     color: #000;
-    min-height: 25px;
-    max-height: 25px;
-    min-width: 100px;
+    min-height: 26px;
+    max-height: 26px;
+    min-width: 70px;
     display: inline-block;
     border: 1px dashed #ced4da;
     vertical-align: middle;

@@ -259,7 +259,19 @@ function showNextQuestion() {
         document.getElementById("submit").classList.remove("d-none");
     }
 }
+// Disable reload page when the quiz starts until its over
+window.onbeforeunload = function() {
+    if (currentQuestionIndex < questions.length) {
+        return "You will lose your progress if you leave this page.";
+    }
+}
+// onclick Submit progress button it will be save result in the browser storage
+document.getElementById("submit").addEventListener("click", function() {
+    //save totalScore in the browser storage
+    localStorage.setItem("totalScore", numCorrect);
+})
 
+// Calculate the total score and answers correct with times spent
 function showResults() {
     clearInterval(timerInterval);
     const totalTime = Math.floor((new Date() - startTime) / 1000);
