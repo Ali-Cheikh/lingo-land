@@ -5,9 +5,9 @@ const questions = [
         answers: {
             a: "Adolf Hitler",
             b: "Batman",
-            c: "Joseph Stalin"
+            c: "Joseph Stalin",
         },
-        correctAnswer: "a"
+        correctAnswer: "a",
     },
     {
         type: "multiple-choice",
@@ -15,21 +15,30 @@ const questions = [
         answers: {
             a: "My name is Jeff.",
             b: "Hisingburg",
-            c: "idk"
+            c: "idk",
         },
-        correctAnswer: "b"
+        correctAnswer: "b",
     },
     {
         type: "fill-in-the-blank",
         question: "Fill in the blanks:",
         words: ["attend", "were", "in", "dogs", "pride"],
         sentences: [
-            { text: "She couldn't ___ the meeting because she was feeling unwell.", correctWord: "attend" },
-            { text: "If I ___ you, I would apologize immediately.", correctWord: "were" },
-            { text: "He is interested ___ learning new languages.", correctWord: "in" },
+            {
+                text: "She couldn't ___ the meeting because she was feeling unwell.",
+                correctWord: "attend",
+            },
+            {
+                text: "If I ___ you, I would apologize immediately.",
+                correctWord: "were",
+            },
+            {
+                text: "He is interested ___ learning new languages.",
+                correctWord: "in",
+            },
             { text: "It’s raining cats and ___ .", correctWord: "dogs" },
-            { text: "She takes ___ in her work.", correctWord: "pride" }
-        ]
+            { text: "She takes ___ in her work.", correctWord: "pride" },
+        ],
     },
     {
         type: "match-words",
@@ -39,9 +48,14 @@ const questions = [
             { text: "A domesticated carnivorous mammal.", correctWord: "dog" },
             { text: "The quality of being thankful.", correctWord: "gratitude" },
             { text: "Expressing strong disapproval.", correctWord: "criticism" },
-            { text: "Having the right to do something.", correctWord: "entitlement" }
-        ]
-    }
+            { text: "Having the right to do something.", correctWord: "entitlement" },
+        ],
+    },
+    {
+        type: "true-or-false",
+        question: "True or False:",
+        statements: [{ text: "The sun is a planet", correctAnswer: "false" }],
+    },
 ];
 
 let currentQuestionIndex = 0;
@@ -59,21 +73,23 @@ function updateTimer() {
     const elapsedTime = Math.floor((now - startTime) / 1000);
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
-    document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    document.getElementById("timer").textContent = `Time: ${minutes}:${seconds < 10 ? "0" : ""
+        }${seconds}`;
 }
 
 function buildQuiz() {
-    const quizContainer = document.getElementById('quiz');
+    const quizContainer = document.getElementById("quiz");
     const currentQuestion = questions[currentQuestionIndex];
 
     if (currentQuestion.type === "multiple-choice") {
         const answers = [];
         for (let letter in currentQuestion.answers) {
             answers.push(
-                `<div class="form-check">
-                    <input class="form-check-input" type="radio" name="question${currentQuestionIndex}" value="${letter}">
-                    <label class="form-check-label">
-                        ${letter} : ${currentQuestion.answers[letter]}
+                `
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <input class="form-check-input me-1" style="left:25px" type="radio" name="question${currentQuestionIndex}" value="${letter}">
+                         ${currentQuestion.answers[letter]}
                     </label>
                 </div>`
             );
@@ -82,23 +98,33 @@ function buildQuiz() {
         quizContainer.innerHTML = `
             <div class="question mb-4">
                 <p class="lead">${currentQuestion.question}</p>
-                <div class="answers">${answers.join('')}</div>
+                <div class="answers">${answers.join("")}</div>
             </div>
         `;
     } else if (currentQuestion.type === "fill-in-the-blank") {
-        const sentences = currentQuestion.sentences.map((sentence, index) => 
-            `<tr id="question${index}">
-                <td>${index + 1}. ${sentence.text.split('___').join(`<div class="dropzone" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`)} <span class="checkmark" id="checkmark${index}"></span></td>
+        const sentences = currentQuestion.sentences
+            .map(
+                (sentence, index) =>
+                    `<tr id="question${index}">
+                <td>${index + 1}. ${sentence.text
+                        .split("___")
+                        .join(
+                            `<div class="dropzone" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`
+                        )} <span class="checkmark" id="checkmark${index}"></span></td>
             </tr>`
-        ).join('');
+            )
+            .join("");
 
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
             <p>Drag and drop the words into the correct blanks to complete the sentences.</p>
             <div id="words">
-                ${currentQuestion.words.map(word => 
-                    `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>`
-                ).join('')}
+                ${currentQuestion.words
+                .map(
+                    (word) =>
+                        `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word} </div>/`
+                )
+                .join("")}
             </div>
             <table class="table">
                 <h3>Sentences</h3>
@@ -106,22 +132,50 @@ function buildQuiz() {
             </table>
         `;
     } else if (currentQuestion.type === "match-words") {
-        const words = currentQuestion.words.map(word => 
-            `<div class="draggable-word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>`
-        ).join('');
+        const words = currentQuestion.words
+            .map(
+                (word) =>
+                    `<div class="draggable-word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>`
+            )
+            .join("");
 
-        const definitions = currentQuestion.definitions.map((definition, index) =>
-            `<div class="definition mb-3">
+        const definitions = currentQuestion.definitions
+            .map(
+                (definition, index) =>
+                    `<div class="definition mb-3">
                 <p>${index + 1}. ${definition.text}</p>
                 <div class="dropzone-word" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark${index}"></span>
             </div>`
-        ).join('');
+            )
+            .join("");
 
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
             <p>Drag and drop the words into the correct blanks to match the definitions.</p>
             <div id="words">${words}</div>
             <div id="definitions">${definitions}</div>
+        `;
+    } else if (currentQuestion.type === "true-or-false") {
+        const statements = currentQuestion.statements
+            .map(
+                (statement, index) =>
+                    `<p>${statement.text}</p>
+                    <div class="d-flex list-group">
+                        <label class="flex-column list-group-item bg-danger text-light">
+                            <input name="statement${index}" type="radio" value="false"> False
+                        </label>
+                    </div>
+                    <div class="list-group">
+                         <label class="success flex-column list-group-item bg-success text-light">
+                            <input name="statement${index}" type="radio" value="true"> True
+                        </label>
+                    </div>`
+            )
+            .join("");
+
+        quizContainer.innerHTML = `
+            <h2 class="my-4">${currentQuestion.question}</h2>
+            ${statements}
         `;
     }
 
@@ -132,7 +186,7 @@ function showNextQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
     if (currentQuestion.type === "multiple-choice") {
-        const answerContainers = document.querySelectorAll('.answers');
+        const answerContainers = document.querySelectorAll(".answers");
         const answerContainer = answerContainers[0];
         const selector = `input[name=question${currentQuestionIndex}]:checked`;
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
@@ -145,7 +199,6 @@ function showNextQuestion() {
         if (userAnswer === currentQuestion.correctAnswer) {
             numCorrect++; // Increment if choice is correct
         }
-
     } else if (currentQuestion.type === "fill-in-the-blank") {
         const sentences = currentQuestion.sentences;
         let allCorrect = true;
@@ -162,14 +215,14 @@ function showNextQuestion() {
         if (allCorrect) {
             numCorrect++; // Increment if all blanks are correct
         }
-
     } else if (currentQuestion.type === "match-words") {
         const definitions = currentQuestion.definitions;
         let allCorrect = true;
 
         definitions.forEach((definition, index) => {
             const dropzone = document.getElementById(`dropzone${index}`);
-            const droppedWord = dropzone && dropzone.firstChild && dropzone.firstChild.id;
+            const droppedWord =
+                dropzone && dropzone.firstChild && dropzone.firstChild.id;
 
             if (droppedWord !== definition.correctWord) {
                 allCorrect = false;
@@ -178,6 +231,28 @@ function showNextQuestion() {
 
         if (allCorrect) {
             numCorrect++; // Increment if all matches are correct
+        }
+    } else if (currentQuestion.type === "true-or-false") {
+        const statements = currentQuestion.statements;
+        let allCorrect = true;
+
+        statements.forEach((statement, index) => {
+            const selector = `input[name=statement${index}]:checked`;
+            const userAnswer = (document.querySelector(selector) || {}).value;
+
+            if (!userAnswer) {
+                alert("Please select an answer before proceeding.");
+                allCorrect = false;
+                return;
+            }
+
+            if (userAnswer !== statement.correctAnswer) {
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect) {
+            numCorrect++; // Increment if all answers are correct
         }
     }
 
@@ -190,8 +265,8 @@ function showNextQuestion() {
     }
 
     if (currentQuestionIndex === questions.length) {
-        document.getElementById('next').classList.add('d-none');
-        document.getElementById('submit').classList.remove('d-none');
+        document.getElementById("next").classList.add("d-none");
+        document.getElementById("submit").classList.remove("d-none");
     }
 }
 
@@ -208,16 +283,16 @@ function showResults() {
     const timePercentage = Math.min((30 / totalMinutes) * 50, 50);
 
     // Calculate total score
-    const totalScore = (correctPercentage + timePercentage)-50;
+    const totalScore = correctPercentage + timePercentage - 50;
 
-    const resultsContainer = document.getElementById('results');
+    const resultsContainer = document.getElementById("results");
     resultsContainer.innerHTML = `
         <p>You got ${numCorrect} out of ${questions.length} correct.</p>
-        <p>Time spent: ${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}</p>
+        <p>Time spent: ${totalMinutes}:${totalSeconds < 10 ? "0" : ""
+        }${totalSeconds}</p>
         <p>Your total score is ${totalScore.toFixed(2)}%.</p>
     `;
 }
-
 
 function allowDrop(event) {
     event.preventDefault();
@@ -229,29 +304,29 @@ function drag(event) {
 
 function drop(event) {
     event.preventDefault();
-    const data = event.dataTransfer.getData("text"); 
+    const data = event.dataTransfer.getData("text");
     const element = document.getElementById(data);
-    element.classList.add('dropzone-word');
+    element.classList.add("dropzone-word");
     event.target.appendChild(element);
 
-    const questionIndex = event.target.id.replace('dropzone', '');
+    const questionIndex = event.target.id.replace("dropzone", "");
     const sentence = questions[currentQuestionIndex].sentences[questionIndex];
     const word = element.textContent.trim();
 
     if (word === sentence.correctWord) {
-        document.getElementById(`${questionIndex}`).textContent = ' ✓';
+        document.getElementById(`${questionIndex}`).textContent = " ✓";
     } else {
-        document.getElementById(`checkmark${questionIndex}`).textContent = ' ✗';
+        document.getElementById(`checkmark${questionIndex}`).textContent = " ✗";
     }
 }
 
 function updateCounter() {
-    document.getElementById('counter').textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    document.getElementById("counter").textContent = `Question ${currentQuestionIndex + 1
+        } of ${questions.length}`;
 }
 
-document.getElementById('next').addEventListener('click', showNextQuestion);
-document.getElementById('submit').addEventListener('click', showResults);
+document.getElementById("next").addEventListener("click", showNextQuestion);
+document.getElementById("submit").addEventListener("click", showResults);
 
 buildQuiz();
 startTimer();
-
