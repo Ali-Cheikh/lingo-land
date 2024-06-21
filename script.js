@@ -4,20 +4,10 @@ const questions = [
         question: "Who is the greatest leader?",
         answers: {
             a: "Adolf Hitler",
-            b: "Batman", 
+            b: "Batman",
             c: "Joseph Stalin",
         },
         correctAnswer: "a",
-    },
-    {
-        type: "multiple-choice",
-        question: "What's my name? Say my name.",
-        answers: {
-            a: "My name is Jeff.",
-            b: "Hisingburg",
-            c: "idk",
-        },
-        correctAnswer: "b",
     },
     {
         type: "fill-in-the-blank",
@@ -86,12 +76,12 @@ function buildQuiz() {
         for (let letter in currentQuestion.answers) {
             answers.push(
                 `
-                <div class="list-group">
-                    <label class="list-group-item">
-                        <input class="form-check-input me-1" style="left:25px" type="radio" name="question${currentQuestionIndex}" value="${letter}">
-                         ${currentQuestion.answers[letter]}
-                    </label>
-                </div>`
+<div class="list-group">
+    <label class="list-group-item custom-radio">
+        <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
+        ${currentQuestion.answers[letter]}
+    </label>
+</div>`
             );
         }
 
