@@ -4,7 +4,7 @@ const questions = [
         question: "Who is the greatest leader?",
         answers: {
             a: "Adolf Hitler",
-            b: "Batman",
+            b: "Batman", 
             c: "Joseph Stalin",
         },
         correctAnswer: "a",
