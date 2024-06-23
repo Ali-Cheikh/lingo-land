@@ -3,369 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fill in the Blanks - English Exam</title>
+    <title>Arrow Matching - English Exam</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Include SweetAlert library -->
     <style>
-
-        .dropzone, .dropzone-word {
-            background-color: #e9ecef;
-            padding:10px;
-            height: 10px;
-            margin: 5px;
-            min-width: 100px;
-            display: inline-block;
-            border: 1px dashed #ced4da;
-            vertical-align: middle;
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
         }
-        .correct {
-            background-color: lightgreen !important;
+        .words, .definitions {
+            width: 45%;
         }
-        .incorrect {
-            background-color: lightcoral !important;
-        }
-        .checkmark {
-            display: none;
-            margin-left: 10px;
-        }
-        .checkmark.active {
-            display: inline-block;
-            color: green;
-        }
-        .progress-bar {
-            height: 20px;
-            background-color: lightblue;
+        .item {
+            padding: 10px;
+            border: 1px solid #ccc;
             margin-bottom: 10px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            user-select: none;
         }
-        .progress-bar-inner {
+        .svg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background-color: green;
-            width: 0;
+            pointer-events: none;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        line {
+            stroke: #000;
+            stroke-width: 2;
+        }
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<br><br>
-<div class="progress-bar" style="max-width: 400px;">
-    <div class="progress-bar-inner" id="progress-bar-inner" style="width: 0;"></div>
-</div>
 <div class="container">
-    <br><br><hr><br>
-    <div id="FITB">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="my-4">Fill in the Blanks</h2>
-                <p>Drag and drop the words into the correct blanks to complete the sentences.</p>
-            
-                <div id="words">
-                    <div class="word" draggable="true" ondragstart="drag(event)" id="attend">attend</div>
-                    <div class="word" draggable="true" ondragstart="drag(event)" id="were">were</div>
-                    <div class="word" draggable="true" ondragstart="drag(event)" id="in">in</div>
-                    <div class="word" draggable="true" ondragstart="drag(event)" id="dogs">dogs</div>
-                    <div class="word" draggable="true" ondragstart="drag(event)" id="pride">pride</div>
-                </div>
-                <table class="table">
-                <h3>Sentences</h3>
-                    <tr id="question0">
-                        <td>1. She couldn't <div class="dropzone" id="dropzone0" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="checkAnswer('dropzone0', 'attend', 'checkmark0')"></div> the meeting because she was feeling unwell. <span class="checkmark" id="checkmark0"></span></td>
-                    </tr>
-                    <tr id="question1">
-                        <td>2. If I <div class="dropzone" id="dropzone1" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="checkAnswer('dropzone1', 'were', 'checkmark1')"></div> you, I would apologize immediately. <span class="checkmark" id="checkmark1"></span></td>
-                    </tr>
-                    <tr id="question2">
-                        <td>3. He is interested <div class="dropzone" id="dropzone2" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="checkAnswer('dropzone2', 'in', 'checkmark2')"></div> learning new languages. <span class="checkmark" id="checkmark2"></span></td>
-                    </tr>
-                    <tr id="question3">
-                        <td>4. It’s raining cats and <div class="dropzone" id="dropzone3" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="checkAnswer('dropzone3', 'dogs', 'checkmark3')"></div>. <span class="checkmark" id="checkmark3"></span></td>
-                    </tr>
-                    <tr id="question4">
-                        <td>5. She takes <div class="dropzone" id="dropzone4" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="checkAnswer('dropzone4', 'pride', 'checkmark4')"></div> in her work. <span class="checkmark" id="checkmark4"></span></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+    <div class="words">
+        <div class="item" id="word1" draggable="true" ondragstart="drag(event)">dog</div>
+        <div class="item" id="word2" draggable="true" ondragstart="drag(event)">gratitude</div>
+        <div class="item" id="word3" draggable="true" ondragstart="drag(event)">criticism</div>
+        <div class="item" id="word4" draggable="true" ondragstart="drag(event)">entitlement</div>
     </div>
-    <br>
-    <!-- Match Words to Definitions Section -->
-    <div id="MTWTD">
-        <div class="card">
-            <div class="card-body">
-                <h3>Match Words to Definitions</h3>
-                <table class="table">
-                    <tr id="question5">
-                        <td>1. A domesticated carnivorous mammal.</td>
-                        <td><div class="dropzone-word" id="dropzone5" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark5"></span></td>
-                    </tr>
-                    <tr id="question6">
-                        <td>2. The quality of being thankful.</td>
-                        <td><div class="dropzone-word" id="dropzone6" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark6"></span></td>
-                    </tr>
-                    <tr id="question7">
-                        <td>3. Expressing strong disapproval.</td>
-                        <td><div class="dropzone-word" id="dropzone7" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark7"></span></td>
-                    </tr>
-                    <tr id="question8">
-                        <td>4. Having the right to do something.</td>
-                        <td><div class="dropzone-word" id="dropzone8" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="checkmark" id="checkmark8"></span></td>
-                    </tr>
-                </table>
-
-                <div id="definitions">
-                    <div class="draggable-word" draggable="true" ondragstart="drag(event)" id="dog">dog</div>
-                    <div class="draggable-word" draggable="true" ondragstart="drag(event)" id="gratitude">gratitude</div>
-                    <div class="draggable-word" draggable="true" ondragstart="drag(event)" id="criticism">criticism</div>
-                    <div class="draggable-word" draggable="true" ondragstart="drag(event)" id="entitlement">entitlement</div>
-                </div>
-            </div>
-        </div>
+    <div class="definitions">
+        <div class="item" id="definition1" ondrop="drop(event)" ondragover="allowDrop(event)" data-definition="dog">A domesticated carnivorous mammal.</div>
+        <div class="item" id="definition2" ondrop="drop(event)" ondragover="allowDrop(event)" data-definition="gratitude">The quality of being thankful.</div>
+        <div class="item" id="definition3" ondrop="drop(event)" ondragover="allowDrop(event)" data-definition="criticism">Expressing strong disapproval.</div>
+        <div class="item" id="definition4" ondrop="drop(event)" ondragover="allowDrop(event)" data-definition="entitlement">Having the right to do something.</div>
     </div>
-
-
-    <button class="btn btn-primary my-4" onclick="checkAnswers()">Submit</button>
-    <button class="btn btn-success my-4" id="save-button" onclick="saveProgress()" style="display: none;">Save My Progress</button>
-
-    <h3 id="results"><br></h3>
+    <div class="svg-container">
+        <svg id="svg-lines"></svg>
+    </div>
 </div>
-
+<div class="btn-container">
+    <button type="button" class="btn btn-primary" onclick="checkMatches()">Check Answers</button>
+</div>
+<div id="result" class="text-center mt-4"></div>
 <script>
-// Function to allow drop in dropzones
+    let currentDraggedElement = null;
+let connections = [];
+
 function allowDrop(event) {
     event.preventDefault();
-}
+} 
 
-// Function to handle drag of words
 function drag(event) {
-    event.dataTransfer.setData("text", event.target.id);
+    currentDraggedElement = event.target;
 }
 
-// Function to handle drop in dropzones
 function drop(event) {
     event.preventDefault();
-    var data = event.dataTransfer.getData("text");
-    event.target.textContent = document.getElementById(data).textContent;
-    event.target.setAttribute("data-answer", data);
-    document.getElementById(data).style.display = "none";
-}
+    if (currentDraggedElement) {
+        const word = currentDraggedElement.textContent;
+        const definitionElement = event.target;
+        const definition = definitionElement.getAttribute('data-definition');
+        connections.push({ word, definition });
 
-// Function to check individual answer
-function checkAnswer(elementId, answer, checkmarkId) {
-    var dropzone = document.getElementById(elementId);
-    var checkmark = document.getElementById(checkmarkId);
-    
-    if (dropzone.textContent.toLowerCase().trim() === answer.toLowerCase().trim()) {
-        dropzone.classList.add("correct");
-        checkmark.innerHTML = "&#10004;";
-        checkmark.classList.add("active");
-    } else {
-        dropzone.classList.add("incorrect");
-        checkmark.innerHTML = "&#10008;";
-        checkmark.classList.add("active");
-        
-        // Show SweetAlert for incorrect answer with instruction note
-        Swal.fire({
-            html: '<h2>The correct answer is:</h2><br><strong>' + answer + '</strong><hr><div style="font-style:bold;color:red; float: right">CLOSE</div>',
-            customClass: {
-                popup: 'swal2-popup'
-            },
-            position: 'bottom-right',
-            showConfirmButton: false,
-            toast: true
-        }); 
+        drawArrow(currentDraggedElement, definitionElement);
     }
 }
 
-// Function to check all answers and display results
-function checkAnswers() {
-    var dropzones = document.getElementsByClassName("dropzone");
-    var dropzonesWords = document.getElementsByClassName("dropzone-word");
-    var correctAnswers = {
-        0: "attend",
-        1: "were",
-        2: "in",
-        3: "dogs",
-        4: "pride",
-        5: "dog",
-        6: "gratitude",
-        7: "criticism",
-        8: "entitlement"
-    };
-    var correctCount = 0;
-    var incorrectAnswers = [];
-    var totalQuestions = dropzones.length + dropzonesWords.length;
+function drawArrow(wordElement, definitionElement) {
+    const svg = document.getElementById('svg-lines');
+    const rect1 = wordElement.getBoundingClientRect();
+    const rect2 = definitionElement.getBoundingClientRect();
 
-    // Check answers for Fill in the Blanks
-    for (var i = 0; i < dropzones.length; i++) {
-        var dropzone = dropzones[i];
-        var dropzoneId = dropzone.id;
-        var checkmarkId = "checkmark" + i;
-        var answer = correctAnswers[i];
-        var userAnswer = dropzone.textContent.trim();
+    const x1 = rect1.right;
+    const y1 = rect1.top + (rect1.height / 2);
+    const x2 = rect2.left;
+    const y2 = rect2.top + (rect2.height / 2);
 
-        if (answer.toLowerCase() === userAnswer.toLowerCase()) {
-            dropzone.classList.add("correct");
-            dropzone.classList.remove("incorrect");
-            document.getElementById(checkmarkId).innerHTML = "&#10004;";
-            document.getElementById(checkmarkId).classList.add("active");
-            correctCount++;
-        } else {
-            dropzone.classList.add("incorrect");
-            dropzone.classList.remove("correct");
-            document.getElementById(checkmarkId).innerHTML = "&#10008;";
-            document.getElementById(checkmarkId).classList.add("active");
-            incorrectAnswers.push({ index: i, correctAnswer: answer });
-        }
-    }
-
-    // Check answers for Match Words to Definitions
-    for (var j = 0; j < dropzonesWords.length; j++) {
-        var dropzoneWord = dropzonesWords[j];
-        var dropzoneWordId = dropzoneWord.id;
-        var checkmarkWordId = "checkmark" + (j + dropzones.length);
-        var answerWord = correctAnswers[j + dropzones.length];
-        var userAnswerWord = dropzoneWord.textContent.trim();
-
-        if (answerWord.toLowerCase() === userAnswerWord.toLowerCase()) {
-            dropzoneWord.classList.add("correct");
-            dropzoneWord.classList.remove("incorrect");
-            document.getElementById(checkmarkWordId).innerHTML = "&#10004;";
-            document.getElementById(checkmarkWordId).classList.add("active");
-            correctCount++;
-        } else {
-            dropzoneWord.classList.add("incorrect");
-            dropzoneWord.classList.remove("correct");
-            document.getElementById(checkmarkWordId).innerHTML = "&#10008;";
-            document.getElementById(checkmarkWordId).classList.add("active");
-            incorrectAnswers.push({ index: j + dropzones.length, correctAnswer: answerWord });
-        }
-    }
-
-    // Display results with instruction note
-    var results = document.getElementById("results");
-    if (incorrectAnswers.length === 0) {
-        results.innerHTML = '<p>Congratulations! You got all answers correct.</p>';
-    } else {
-        var resultsText = "You got " + correctCount + " out of " + totalQuestions + " correct.";
-        results.innerHTML = '<p>' + resultsText + '</p><p style="font-size: small;">' +
-                            'Click on the red box to reveal the correct answer.</p>';
-    }
-
-    // Update progress bar
-    var progressBarInner = document.getElementById("progress-bar-inner");
-    var progressPercentage = (correctCount / totalQuestions) * 100;
-    progressBarInner.style.width = progressPercentage + '%';
-
-    // Show save button if all questions are answered
-    var allAnswered = correctCount + incorrectAnswers.length === totalQuestions;
-    if (allAnswered) {
-        document.getElementById("save-button").style.display = "block";
-    }
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    svg.appendChild(line);
 }
 
-function saveProgress() {
-    var dropzones = document.getElementsByClassName("dropzone");
-    var dropzonesWords = document.getElementsByClassName("dropzone-word");
-    var progress = {};
+function checkMatches() {
+    const correctAnswers = [
+        { word: 'dog', definition: 'A domesticated carnivorous mammal.' },
+        { word: 'gratitude', definition: 'The quality of being thankful.' },
+        { word: 'criticism', definition: 'Expressing strong disapproval.' },
+        { word: 'entitlement', definition: 'Having the right to do something.' }
+    ];
 
-    // Save answers for Fill in the Blanks to localStorage
-    for (var i = 0; i < dropzones.length; i++) {
-        var dropzone = dropzones[i];
-        progress[dropzone.id] = dropzone.textContent.trim();
-    }
-    
-    // Save answers for Match Words to Definitions to localStorage
-    for (var j = 0; j < dropzonesWords.length; j++) {
-        var dropzoneWord = dropzonesWords[j];
-        progress[dropzoneWord.id] = dropzoneWord.textContent.trim();
-    }
-    
-    // Save progress to localStorage
-    localStorage.setItem('progress', JSON.stringify(progress));
-    
-    // Update the results section to show progress message
-    var results = document.getElementById("results");
-    results.innerHTML = '<p>Progress saved! You can continue later.</p>';
+    let correctCount = 0;
+
+    connections.forEach(connection => {
+        correctAnswers.forEach(answer => {
+            if (connection.word === answer.word && connection.definition === answer.definition) {
+                correctCount++;
+            }
+        });
+    });
+
+    const totalQuestions = correctAnswers.length;
+    const resultText = `<h3>Results</h3><p>Total Score: ${correctCount} out of ${totalQuestions}</p>`;
+    document.getElementById('result').innerHTML = resultText;
 }
 
-// Function to update progress bar based on saved progress
-function updateProgressBar() {
-    var progress = JSON.parse(localStorage.getItem('progress')) || {};
-    var dropzones = document.getElementsByClassName("dropzone");
-    var dropzonesWords = document.getElementsByClassName("dropzone-word");
-    var totalQuestions = dropzones.length + dropzonesWords.length;
-    var answeredQuestions = 0;
-
-    // Count answered questions for Fill in the Blanks
-    for (var i = 0; i < dropzones.length; i++) {
-        var dropzoneId = dropzones[i].id;
-        if (progress.hasOwnProperty(dropzoneId) && progress[dropzoneId].trim() !== '') {
-            answeredQuestions++;
-        }
-    }
-
-    // Count answered questions for Match Words to Definitions
-    for (var j = 0; j < dropzonesWords.length; j++) {
-        var dropzoneWordId = dropzonesWords[j].id;
-        if (progress.hasOwnProperty(dropzoneWordId) && progress[dropzoneWordId].trim() !== '') {
-            answeredQuestions++;
-        }
-    }
-
-    // Calculate percentage of answered questions
-    var progressPercentage = (answeredQuestions / totalQuestions) * 100;
-
-    // Update progress bar
-    var progressBarInner = document.getElementById("progress-bar-inner");
-    progressBarInner.style.width = progressPercentage + '%';
-}
-
-// Function to load saved progress from localStorage
-function loadSavedProgress() {
-    var progress = JSON.parse(localStorage.getItem('progress')) || {};
-    var dropzones = document.getElementsByClassName("dropzone");
-    var dropzonesWords = document.getElementsByClassName("dropzone-word");
-
-    // Restore answers for Fill in the Blanks from localStorage
-    for (var i = 0; i < dropzones.length; i++) {
-        var dropzoneId = dropzones[i].id;
-        if (progress.hasOwnProperty(dropzoneId) && progress[dropzoneId].trim() !== '') {
-            dropzones[i].textContent = progress[dropzoneId];
-            dropzones[i].setAttribute("data-answer", progress[dropzoneId]);
-            dropzones[i].style.pointerEvents = 'none'; // Disable drag and drop for answered questions
-            document.getElementById("checkmark" + i).innerHTML = "&#10004;";
-            document.getElementById("checkmark" + i).classList.add("active");
-            document.getElementById("checkmark" + i).style.display = "inline-block"; // Show checkmark
-        }
-    }
-
-    // Restore answers for Match Words to Definitions from localStorage
-    for (var j = 0; j < dropzonesWords.length; j++) {
-        var dropzoneWordId = dropzonesWords[j].id;
-        if (progress.hasOwnProperty(dropzoneWordId) && progress[dropzoneWordId].trim() !== '') {
-            dropzonesWords[j].textContent = progress[dropzoneWordId];
-            dropzonesWords[j].setAttribute("data-answer", progress[dropzoneWordId]);
-            dropzonesWords[j].style.pointerEvents = 'none'; // Disable drag and drop for answered questions
-            document.getElementById("checkmark" + (j + dropzones.length)).innerHTML = "&#10004;";
-            document.getElementById("checkmark" + (j + dropzones.length)).classList.add("active");
-            document.getElementById("checkmark" + (j + dropzones.length)).style.display = "inline-block"; // Show checkmark
-        }
-    }
-
-    // Update progress bar
-    updateProgressBar();
-
-    // Check if all questions are answered to display the save button
-    var totalQuestions = dropzones.length + dropzonesWords.length;
-    var answeredQuestions = Object.keys(progress).length;
-    if (answeredQuestions === totalQuestions) {
-        document.getElementById("save-button").style.display = "block";
-    }
-}
-
-// Call loadSavedProgress function when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadSavedProgress();
-});
 </script>
-
 </body>
 </html>
