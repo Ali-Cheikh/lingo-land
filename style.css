@@ -12,10 +12,6 @@ body {
     background-color: rgba(255, 255, 255, 0.979);
 }
 
-h1 {
-    color: #343a40;
-}
-
 p {
     color: #6c757d;
     font-size: larger;
@@ -87,3 +83,17 @@ label:hover {
         width: 35%;
     }
 }
+/*
+Main color
+#3C5871
+shadow
+#006666
+user interaction
+#F3A987
+complementary color
+#782E0C
+air color Mainly text
+#0F5D84
+light color
+#D4A118
+*/
