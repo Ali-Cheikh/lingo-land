@@ -46,6 +46,39 @@ const questions = [
         question: "True or False:",
         statements: [{ text: "The sun is a planet", correctAnswer: "false" }],
     },
+    {
+        type: "select-the-right-word",
+        question: "Select the correct word to complete the sentence:",
+        sentence: {
+            text: "She ___ the meeting because she was feeling unwell.",
+            correctWord: "missed",
+        },
+        options: ["missed", "attended", "skipped", "postponed"],
+        correctAnswer: "missed",
+    },
+    {
+        type: "select-the-right-word-",
+        question: "Grammar-in-Context: Complete the paragraph by selecting the correct words.",
+        paragraph: {
+            text: "You probably already know some things about Oxford University, ___ there is probably a lot you don't know. It's called 'Oxford University' ___ it is located in the town of Oxford, England (about 90 kilometers outside of London). Classes first began there almost a thousand years ago (in 1096), and it is one of the best universities ___ the world. Most colleges and universities are located on just one main campus, but this university is special. ___ located in many different places around the town of Oxford. For example, near South Parks Road you can ___ the Science Area, while just behind Broad Street you can ___ at the Sheldonian Theater. Do you ___? If yes, there are millions of books at the university's Bodleian Libraries. In addition, the university ___ a large number of parks - the Botanic Garden on High Street has more ___ 8,000 different kinds of plants. Of course, the students are the most important part of Oxford University ___ more than 21,000 of them from the U. K. And from around the world. Finally, if ___ thinking of visiting (or studying at) Oxford, there is even a gift shop at 106 High Street ___ you can buy souvenirs to remember your time at this amazing university.",
+            correctWords: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
+        },
+        options: [
+            ["so", "but", "that", "because"],
+            ["because", "so", "then", "but"],
+            ["on the world", "world", "the world", "in the world"],
+            ["It's", "I", "Its", "It have"],
+            ["will find", "finds", "finding", "find"],
+            ["listening to music", "listen", "listens to music", "listen to music"],
+            ["like to read", "likes reading", "reading", "likes to read"],
+            ["have", "has", "it have", "it has"],
+            ["then", "than", "that", "this"],
+            ["there", "there is", "there are", "has"],
+            ["your", "you", "you're", "yours"],
+            ["why", "which", "where", "what"]
+        ],
+        correctAnswers: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
+    }
 ];
 
 let currentQuestionIndex = 0;
@@ -75,13 +108,12 @@ function buildQuiz() {
         const answers = [];
         for (let letter in currentQuestion.answers) {
             answers.push(
-                `
-<div class="list-group">
-    <label class="list-group-item custom-radio">
-        <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
-        ${currentQuestion.answers[letter]}
-    </label>
-</div>`
+                `<div class="list-group">
+                    <label class="list-group-item custom-radio">
+                        <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
+                        ${currentQuestion.answers[letter]}
+                    </label>
+                </div>`
             );
         }
 
@@ -96,12 +128,12 @@ function buildQuiz() {
             .map(
                 (sentence, index) =>
                     `<tr id="question${index}">
-                <td>${index + 1}. ${sentence.text
-                        .split("___")
-                        .join(
-                            `<div class="dropzone" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`
-                        )} <span class="" id="${index}"></span></td>
-            </tr>`
+                        <td>${index + 1}. ${sentence.text
+                            .split("___")
+                            .join(`<div class="dropzone" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`)}
+                            <span class="" id="${index}"></span>
+                        </td>
+                    </tr>`
             )
             .join("");
 
@@ -110,11 +142,11 @@ function buildQuiz() {
             <p>Drag and drop the words into the correct blanks to complete the sentences.</p>
             <div id="words">
                 ${currentQuestion.words
-                .map(
-                    (word) =>
-                        `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word} </div>/`
-                )
-                .join("")}
+                    .map(
+                        (word) =>
+                            `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>/`
+                    )
+                    .join("")}
             </div>
             <table class="table">
                 <h3>Sentences</h3>
@@ -133,9 +165,9 @@ function buildQuiz() {
             .map(
                 (definition, index) =>
                     `<div class="definition mb-3">
-                <p>${index + 1}. ${definition.text}</p>
-                <div class="dropzone-word" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="" id="${index}"></span>
-            </div>`
+                        <p>${index + 1}. ${definition.text}</p>
+                        <div class="dropzone-word" id="dropzone${index}" ondrop="drop(event)" ondragover="allowDrop(event)"></div><span class="" id="${index}"></span>
+                    </div>`
             )
             .join("");
 
@@ -156,7 +188,7 @@ function buildQuiz() {
                         </label>
                     </div>
                     <div class="list-group">
-                         <label class="success flex-column list-group-item bg-success text-light">
+                        <label class="success flex-column list-group-item bg-success text-light">
                             <input name="statement${index}" type="radio" value="true"> True
                         </label>
                     </div>`
@@ -166,6 +198,27 @@ function buildQuiz() {
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
             ${statements}
+        `;
+    } else if (currentQuestion.type === "select-the-right-word") {
+        // Render select-the-right-word question
+        const optionsHTML = currentQuestion.options
+            .map((option) => `<option value="${option}">${option}</option>`)
+            .join("");
+
+        quizContainer.innerHTML = `
+            <h2 class="my-4">${currentQuestion.question}</h2>
+            <p>${currentQuestion.sentence.text.replace("___", `<select id="selectWord">${optionsHTML}</select>`)}</p>
+        `;
+    } else if (currentQuestion.type === "select-the-right-word-") {
+        const optionsHTML = currentQuestion.options.map(options => {
+            return options.map(option =>
+                `<option value="${option}">${option}</option>`
+            ).join("");
+        });
+
+        quizContainer.innerHTML = `
+            <h2 class="my-4">${currentQuestion.question}</h2>
+            <p>${currentQuestion.paragraph.text.replace(/\___/g, () => `<select class="select-word">${optionsHTML.shift()}</select>`)}</p>
         `;
     }
 
@@ -244,6 +297,31 @@ function showNextQuestion() {
         if (allCorrect) {
             numCorrect++; // Increment if all answers are correct
         }
+    } else if (currentQuestion.type === "select-the-right-word") {
+        // Handle select-the-right-word question
+        const selectedWord = document.getElementById("selectWord").value;
+        const correctWord = currentQuestion.sentence.correctWord;
+
+        if (selectedWord === correctWord) {
+            numCorrect++; // Increment if selected word is correct
+        }
+    } else if (currentQuestion.type === "select-the-right-word-") {
+        const selectElements = document.querySelectorAll(".select-word");
+        const userAnswers = Array.from(selectElements).map(select => select.value);
+
+        const correctAnswers = currentQuestion.correctAnswers;
+        let allCorrect = true;
+
+        for (let i = 0; i < correctAnswers.length; i++) {
+            if (userAnswers[i] !== correctAnswers[i]) {
+                allCorrect = false;
+                break;
+            }
+        }
+
+        if (allCorrect) {
+            numCorrect++;
+        }
     }
 
     currentQuestionIndex++;
@@ -259,6 +337,7 @@ function showNextQuestion() {
         document.getElementById("submit").classList.remove("d-none");
     }
 }
+
 
 // Disable reload page when the quiz starts until its over
 window.onbeforeunload = function() {
