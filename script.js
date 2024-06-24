@@ -58,24 +58,24 @@ const questions = [
     },
     {
         type: "select-the-right-word-",
-        question: "Grammar-in-Context: Complete the paragraph by selecting the correct words.",
+        question: "Complete the paragraph by selecting the correct words.",
         paragraph: {
             text: "You probably already know some things about Oxford University, ___ there is probably a lot you don't know. It's called 'Oxford University' ___ it is located in the town of Oxford, England (about 90 kilometers outside of London). Classes first began there almost a thousand years ago (in 1096), and it is one of the best universities ___ the world. Most colleges and universities are located on just one main campus, but this university is special. ___ located in many different places around the town of Oxford. For example, near South Parks Road you can ___ the Science Area, while just behind Broad Street you can ___ at the Sheldonian Theater. Do you ___? If yes, there are millions of books at the university's Bodleian Libraries. In addition, the university ___ a large number of parks - the Botanic Garden on High Street has more ___ 8,000 different kinds of plants. Of course, the students are the most important part of Oxford University ___ more than 21,000 of them from the U. K. And from around the world. Finally, if ___ thinking of visiting (or studying at) Oxford, there is even a gift shop at 106 High Street ___ you can buy souvenirs to remember your time at this amazing university.",
             correctWords: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
         },
         options: [
-            ["so", "but", "that", "because"],
-            ["because", "so", "then", "but"],
-            ["on the world", "world", "the world", "in the world"],
-            ["It's", "I", "Its", "It have"],
-            ["will find", "finds", "finding", "find"],
-            ["listening to music", "listen", "listens to music", "listen to music"],
-            ["like to read", "likes reading", "reading", "likes to read"],
-            ["have", "has", "it have", "it has"],
-            ["then", "than", "that", "this"],
-            ["there", "there is", "there are", "has"],
-            ["your", "you", "you're", "yours"],
-            ["why", "which", "where", "what"]
+            [ "but", "that", "because"],
+            ["because", "then", "but"],
+            ["on", "in", "to"],
+            ["Its", "It", "It is"],
+            ["finds", "finding", "find"],
+            ["listen", "listens to music", "listen to music"],
+            ["likes reading", "reading", "likes to read"],
+            ["has", "it have", "it has"],
+            ["than", "that", "this"],
+            ["there is", "there are", "has"],
+            ["you", "you're", "yours"],
+            ["which", "where", "what"]
         ],
         correctAnswers: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
     }
@@ -207,7 +207,7 @@ function buildQuiz() {
 
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
-            <p>${currentQuestion.sentence.text.replace("___", `<select id="selectWord">${optionsHTML}</select>`)}</p>
+            <p>${currentQuestion.sentence.text.replace("___", `<select id="selectWord" class="select-word" style="background-color:lightblue;text-align:center;width:fit-content" value"">🔽</option>${optionsHTML}</select>`)}</p>
         `;
     } else if (currentQuestion.type === "select-the-right-word-") {
         const optionsHTML = currentQuestion.options.map(options => {
@@ -218,7 +218,7 @@ function buildQuiz() {
 
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
-            <p>${currentQuestion.paragraph.text.replace(/\___/g, () => `<select class="select-word">${optionsHTML.shift()}</select>`)}</p>
+            <p>${currentQuestion.paragraph.text.replace(/\___/g, () => `<select class="select-word" ><option style="background-color:lightblue;text-align:center;width:fit-content" value"">▽</option>${optionsHTML.shift()}</select>`)}</p>
         `;
     }
 
@@ -337,6 +337,7 @@ function showNextQuestion() {
         document.getElementById("submit").classList.remove("d-none");
     }
 }
+
 
 
 // Disable reload page when the quiz starts until its over

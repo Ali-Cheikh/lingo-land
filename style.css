@@ -83,6 +83,17 @@ label:hover {
         width: 35%;
     }
 }
+.select-word {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    max-width: 80px;
+}
+
 /*
 Main color
 #3C5871
