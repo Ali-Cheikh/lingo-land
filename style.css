@@ -17,35 +17,59 @@ p {
     font-size: larger;
 }
 
-.card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/*======================================*/
+/*multiple-choice */
+
+.list-group-item.custom-radio input[type="radio"] {
+    /* Hide the default radio button */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     border: none;
+    outline: none;
+    /* Add your custom styling here */
+    /* For example: */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    margin-right: 10px;
+}
+
+.list-group-item.custom-radio input[type="radio"]:checked {
+    /* Style for the checked state */
+    background-color: #66ff00;
+    /* Add any other styles you want */
 }
 
 #results {
     font-size: 18px;
     color: #343a40;
 }
-
-.word, .draggable-word {
+.word,
+.draggable-word {
     display: inline-block;
-    margin: 4px;
-    padding:0px 10px;
+    margin: 8px;
+    padding:0 15px;
     background-color: #007bff;
     color: white;
     border-radius: 5px;
     cursor: move;
+    transform-origin: left top; /* Set the transform origin */
 }
-/*while hovering or dragging on the words they will scale up until released in the dropzone */
-.word:hover, .draggable-word:hover {
+
+.word:hover,
+.draggable-word:hover {
     transform: scale(1.3) rotate(-10deg);
     transition: 0.2s;
 }
-.draggable-word:active{
+
+.draggable-word:active {
     transform: scale(1.3);
 }
 
-.dropzone, .dropzone-word {
+.dropzone,
+.dropzone-word {
     background-color: #15ff00;
     color: #000;
     min-height: 26px;
@@ -56,7 +80,26 @@ p {
     vertical-align: middle;
     border-radius: 5px;
     margin: 0;
+    transition: transform 0.2s; /* Add a transition for smooth scaling */
 }
+
+.dropzone:hover {
+    transform: scale(1.1); /* Scale up on hover */
+}
+
+.selected {
+    border: 2px solid #00f;
+    transform: scale(1.1);
+}
+.image-choice {
+    cursor: pointer;
+    display: inline-block;
+}
+.image-choice:hover{
+    transform: scale(1.1);
+    border: 2px solid greenyellow;
+}
+
 
 input[type="radio"]{
     position: absolute;
@@ -71,16 +114,26 @@ label:hover {
     cursor: pointer;
 }
 
-
+@media (max-width:440px) {
+    body{
+        font-size: x-larger;
+        font-weight: bold;
+    }
+}
 @media (min-width:440px) {
     body{
         text-align: center;
+        font-size: xxx-larger;
+        font-weight:700;
     }
     .table{
         text-align: start;
     }
     img{
         width: 35%;
+    }
+    .subway{
+        width: 100%;
     }
 }
 .select-word {
@@ -108,3 +161,70 @@ air color Mainly text
 light color
 #D4A118
 */
+.tt{
+
+--color-background-body: #233042;
+--color-primary-body: #354156;
+--color-blue-light: #30aab3;
+--color-yellow: #ffca30;
+--color-red: #fa3757;
+--color-red-dark: #e02045;
+--color-green-dark: #4d967b;
+--color-background-primary: #fcfcf4;
+
+}
+
+/*===================================*/
+/*tshu tshu trainnn!!*/
+
+.subway {
+    padding: 1.2rem 0
+}
+
+.subway .cls-1 {
+    fill: none;
+    stroke: #575151
+}
+
+.subway .cls-2 {
+    fill: #f8f3dc
+}
+
+.subway .cls-2,.subway .cls-3,.subway .cls-4 {
+    stroke: #485267;
+    stroke-width: .5px
+}
+
+.subway .cls-3 {
+    fill: #fa3757
+}
+
+.subway .cls-4 {
+    fill: #485267
+}
+
+.subway .train {
+    -webkit-animation: moveTrain 30s ease-in-out 20 forwards;
+    animation: moveTrain 30s ease-in-out 20 forwards;
+    transform: translateX(-90%);
+    will-change: transform;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    .subway .train {
+        -webkit-animation: none;
+        animation: none
+    }
+}
+
+@keyframes moveTrain {
+    40%, 60% {
+        transform: translateX(0%);
+    }
+    60%, 80% {
+        transform: translateX(50%);
+    }
+    100% {
+        transform: translateX(100%)
+    }
+}

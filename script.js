@@ -1,5 +1,14 @@
 const questions = [
     {
+        type: "image-choice",
+        question: "Which of these is lingo land old logo?",
+        images: [
+            { src: "img/praimarylogo.png", correct: true },
+            { src: "img/bassemSignature.svg", correct: false },
+            { src: "img/Petrol Blue-trellis-pattern.png", correct: false }
+        ]
+    },
+    {
         type: "multiple-choice",
         question: "Who is the greatest leader?",
         answers: {
@@ -47,37 +56,20 @@ const questions = [
         statements: [{ text: "The sun is a planet", correctAnswer: "false" }],
     },
     {
-        type: "select-the-right-word",
-        question: "Select the correct word to complete the sentence:",
-        sentence: {
-            text: "She ___ the meeting because she was feeling unwell.",
-            correctWord: "missed",
-        },
-        options: ["missed", "attended", "skipped", "postponed"],
-        correctAnswer: "missed",
-    },
-    {
         type: "select-the-right-word-",
         question: "Complete the paragraph by selecting the correct words.",
         paragraph: {
-            text: "You probably already know some things about Oxford University, ___ there is probably a lot you don't know. It's called 'Oxford University' ___ it is located in the town of Oxford, England (about 90 kilometers outside of London). Classes first began there almost a thousand years ago (in 1096), and it is one of the best universities ___ the world. Most colleges and universities are located on just one main campus, but this university is special. ___ located in many different places around the town of Oxford. For example, near South Parks Road you can ___ the Science Area, while just behind Broad Street you can ___ at the Sheldonian Theater. Do you ___? If yes, there are millions of books at the university's Bodleian Libraries. In addition, the university ___ a large number of parks - the Botanic Garden on High Street has more ___ 8,000 different kinds of plants. Of course, the students are the most important part of Oxford University ___ more than 21,000 of them from the U. K. And from around the world. Finally, if ___ thinking of visiting (or studying at) Oxford, there is even a gift shop at 106 High Street ___ you can buy souvenirs to remember your time at this amazing university.",
-            correctWords: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
+            text: "“Maglalatik” is also known as (11) ___. It is a (12) ___ dance. It is performed by (13) ___ wearing red and blue (14) ___. They used 6-10 pieces of (15) ___ attached to the different parts of their body.pls answer!!",
+            correctWords: ["Magbabao", "Folk", "Males", "Trousers", "find"]
         },
         options: [
-            [ "but", "that", "because"],
-            ["because", "then", "but"],
-            ["on", "in", "to"],
-            ["Its", "It", "It is"],
+            [ "Magbabao", "that", "because"],
+            ["Folk", "then", "but"],
+            ["Males", "in", "to"],
+            ["Trousers", "It", "It is"],
             ["finds", "finding", "find"],
-            ["listen", "listens to music", "listen to music"],
-            ["likes reading", "reading", "likes to read"],
-            ["has", "it have", "it has"],
-            ["than", "that", "this"],
-            ["there is", "there are", "has"],
-            ["you", "you're", "yours"],
-            ["which", "where", "what"]
         ],
-        correctAnswers: ["but", "because", "in", "It's", "find", "listen to music", "like to read", "has", "than", "there are", "you're", "where"]
+        correctAnswers: ["but", "because", "in", "It's", "find"]
     }
 ];
 
@@ -144,7 +136,7 @@ function buildQuiz() {
                 ${currentQuestion.words
                     .map(
                         (word) =>
-                            `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>/`
+                            `<div class="word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>`
                     )
                     .join("")}
             </div>
@@ -160,7 +152,7 @@ function buildQuiz() {
                     `<div class="draggable-word" draggable="true" ondragstart="drag(event)" id="${word}">${word}</div>`
             )
             .join("");
-
+    
         const definitions = currentQuestion.definitions
             .map(
                 (definition, index) =>
@@ -170,7 +162,7 @@ function buildQuiz() {
                     </div>`
             )
             .join("");
-
+    
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
             <p>Drag and drop the words into the correct blanks to match the definitions.</p>
@@ -183,12 +175,12 @@ function buildQuiz() {
                 (statement, index) =>
                     `<p>${statement.text}</p>
                     <div class="d-flex list-group">
-                        <label class="flex-column list-group-item bg-danger text-light">
+                        <label class="flex-column list-group-item custom-radio bg-danger text-light">
                             <input name="statement${index}" type="radio" value="false"> False
                         </label>
                     </div>
                     <div class="list-group">
-                        <label class="success flex-column list-group-item bg-success text-light">
+                        <label class="flex-column list-group-item custom-radio bg-success text-light">
                             <input name="statement${index}" type="radio" value="true"> True
                         </label>
                     </div>`
@@ -198,16 +190,6 @@ function buildQuiz() {
         quizContainer.innerHTML = `
             <h2 class="my-4">${currentQuestion.question}</h2>
             ${statements}
-        `;
-    } else if (currentQuestion.type === "select-the-right-word") {
-        // Render select-the-right-word question
-        const optionsHTML = currentQuestion.options
-            .map((option) => `<option value="${option}">${option}</option>`)
-            .join("");
-
-        quizContainer.innerHTML = `
-            <h2 class="my-4">${currentQuestion.question}</h2>
-            <p>${currentQuestion.sentence.text.replace("___", `<select id="selectWord" class="select-word" style="background-color:lightblue;text-align:center;width:fit-content" value"">🔽</option>${optionsHTML}</select>`)}</p>
         `;
     } else if (currentQuestion.type === "select-the-right-word-") {
         const optionsHTML = currentQuestion.options.map(options => {
@@ -220,7 +202,26 @@ function buildQuiz() {
             <h2 class="my-4">${currentQuestion.question}</h2>
             <p>${currentQuestion.paragraph.text.replace(/\___/g, () => `<select class="select-word" ><option style="background-color:lightblue;text-align:center;width:fit-content" value"">▽</option>${optionsHTML.shift()}</select>`)}</p>
         `;
+    } else if (currentQuestion.type === "image-choice") {
+        const imagesHTML = currentQuestion.images.map((image, index) => `
+            <img src="${image.src}" class="image-choice" data-index="${index}" style="width: 150px; height: 150px; margin: 10px;">
+        `).join("");
+
+        quizContainer.innerHTML = `
+            <div class="question mb-4">
+                <p class="lead">${currentQuestion.question}</p>
+                <div class="images"><center>${imagesHTML}</center></div>
+            </div>
+        `;
+
+        document.querySelectorAll('.image-choice').forEach(img => {
+            img.addEventListener('click', (e) => {
+                document.querySelectorAll('.image-choice').forEach(i => i.classList.remove('selected'));
+                e.target.classList.add('selected');
+            });
+        });
     }
+
 
     updateCounter();
 }
@@ -297,14 +298,6 @@ function showNextQuestion() {
         if (allCorrect) {
             numCorrect++; // Increment if all answers are correct
         }
-    } else if (currentQuestion.type === "select-the-right-word") {
-        // Handle select-the-right-word question
-        const selectedWord = document.getElementById("selectWord").value;
-        const correctWord = currentQuestion.sentence.correctWord;
-
-        if (selectedWord === correctWord) {
-            numCorrect++; // Increment if selected word is correct
-        }
     } else if (currentQuestion.type === "select-the-right-word-") {
         const selectElements = document.querySelectorAll(".select-word");
         const userAnswers = Array.from(selectElements).map(select => select.value);
@@ -320,6 +313,17 @@ function showNextQuestion() {
         }
 
         if (allCorrect) {
+            numCorrect++;
+        }
+    } else if (currentQuestion.type === "image-choice") {
+        const selectedImage = document.querySelector('.image-choice.selected');
+        if (!selectedImage) {
+            alert("Please select an image before proceeding.");
+            return;
+        }
+
+        const selectedIndex = selectedImage.getAttribute('data-index');
+        if (currentQuestion.images[selectedIndex].correct) {
             numCorrect++;
         }
     }
