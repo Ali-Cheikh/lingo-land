@@ -1,5 +1,14 @@
 const questions = [
     {
+        type: "tap-in-right-place",
+        question: "Complete the sentences.",
+        sentences: [
+            { text: "The sky is ___.", correctWord: "blue" },
+            { text: "Grass is ___ in color.", correctWord: "green" }
+        ],
+        words: ["blue", "green"]
+    },
+    {
         type: "image-choice",
         question: "Which of these is lingo land old logo?",
         images: [
@@ -90,6 +99,20 @@ function updateTimer() {
     const seconds = elapsedTime % 60;
     document.getElementById("timer").textContent = `Time: ${minutes}:${seconds < 10 ? "0" : ""
         }${seconds}`;
+}
+
+function selectWord(word) {
+    selectedWord = word;
+    document.querySelectorAll('.word, .draggable-word').forEach(w => w.classList.remove('selected'));
+    document.getElementById(word).classList.add('selected');
+}
+
+function selectDropzone(index) {
+    if (selectedWord) {
+        document.getElementById(`dropzone${index}`).textContent = selectedWord;
+        document.getElementById(selectedWord).classList.remove('selected');
+        selectedWord = null;
+    }
 }
 
 function buildQuiz() {
@@ -220,6 +243,36 @@ function buildQuiz() {
                 e.target.classList.add('selected');
             });
         });
+    } else if (currentQuestion.type === "put-in-right-place") {
+        const sentences = currentQuestion.sentences
+            .map(
+                (sentence, index) =>
+                    `<tr id="question${index}">
+                        <td>${index + 1}. ${sentence.text
+                            .split("___")
+                            .join(`<div class="dropzone" id="dropzone${index}" onclick="selectDropzone(${index})"></div>`)}
+                            <span class="" id="${index}"></span>
+                        </td>
+                    </tr>`
+            )
+            .join("");
+
+        quizContainer.innerHTML = `
+            <h2 class="my-4">${currentQuestion.question}</h2>
+            <p>Tap the words and then tap the blanks to complete the sentences.</p>
+            <div id="words">
+                ${currentQuestion.words
+                    .map(
+                        (word) =>
+                            `<div class="word" onclick="selectWord('${word}')" id="${word}">${word}</div>`
+                    )
+                    .join("")}
+            </div>
+            <table class="table">
+                <h3>Sentences</h3>
+                ${sentences}
+            </table>
+        `;
     }
 
 
@@ -326,7 +379,23 @@ function showNextQuestion() {
         if (currentQuestion.images[selectedIndex].correct) {
             numCorrect++;
         }
-    }
+    } else if (currentQuestion.type === "put-in-right-place") {
+        const sentences = currentQuestion.sentences;
+        let allCorrect = true;
+
+        sentences.forEach((sentence, index) => {
+            const dropzone = document.getElementById(`dropzone${index}`);
+            const droppedWord = dropzone && dropzone.textContent.trim();
+
+            if (droppedWord !== sentence.correctWord) {
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect) {
+            numCorrect++; // Increment if all fill-in-the-blanks are correct
+        }
+    } 
 
     currentQuestionIndex++;
 
