@@ -1,6 +1,6 @@
 const questions = [
     {
-        type: "tap-in-right-place",
+        type: "put-in-right-place",
         question: "Complete the sentences.",
         sentences: [
             { text: "The sky is ___.", correctWord: "blue" },
@@ -28,7 +28,7 @@ const questions = [
         correctAnswer: "a",
     },
     {
-        type: "fill-in-the-blank",
+        type: "put-in-right-place",
         question: "Fill in the blanks:",
         words: ["attend", "were", "in", "dogs", "pride"],
         sentences: [
