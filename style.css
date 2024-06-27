@@ -221,7 +221,7 @@ light color
 }
 
 @keyframes moveTrain {
-    40%, 60% {
+    10%, 60% {
         transform: translateX(0%);
     }
     60%, 80% {
