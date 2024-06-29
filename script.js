@@ -1,5 +1,16 @@
 const questions = [
     {
+        type: "Listening",
+        question: "What color is Mario's hat",
+        listening:"rec/record1.mp3",
+        answers: {
+            a: "Red",
+            b: "Blue",
+            c: "Green",
+        },
+        correctAnswer: "a",
+    },
+    {
         type: "put-in-right-place",
         question: "Complete the sentences.",
         sentences: [
@@ -273,6 +284,30 @@ function buildQuiz() {
                 ${sentences}
             </table>
         `;
+    } else if (currentQuestion.type === "Listening") {
+        const answers = [];
+        for (let letter in currentQuestion.answers) {
+            answers.push(
+                `
+                <div class="list-group">
+                    <label class="list-group-item custom-radio">
+                        <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
+                        <span class="form-check-label">${currentQuestion.answers[letter]}</span>
+                    </label>
+                </div>`
+            );
+        }
+
+        quizContainer.innerHTML = `
+            <div class="question mb-4">
+                <audio controls>
+                    <source src="${currentQuestion.listening}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <h4 class="lead">${currentQuestion.question}</h4>
+                <div class="answers">${answers.join('')}</div>
+            </div>
+        `;
     }
 
 
@@ -282,8 +317,8 @@ function buildQuiz() {
 function showNextQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
-    if (currentQuestion.type === "multiple-choice") {
-        const answerContainers = document.querySelectorAll(".answers");
+    if (currentQuestion.type === "multiple-choice" || currentQuestion.type === "Listening") {
+        const answerContainers = document.querySelectorAll('.answers');
         const answerContainer = answerContainers[0];
         const selector = `input[name=question${currentQuestionIndex}]:checked`;
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
@@ -296,6 +331,7 @@ function showNextQuestion() {
         if (userAnswer === currentQuestion.correctAnswer) {
             numCorrect++; // Increment if choice is correct
         }
+
     } else if (currentQuestion.type === "fill-in-the-blank") {
         const sentences = currentQuestion.sentences;
         let allCorrect = true;
