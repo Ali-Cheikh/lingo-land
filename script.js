@@ -290,7 +290,7 @@ function buildQuiz() {
             answers.push(
                 `
                 <div class="list-group">
-                    <label class="list-group-item">
+                    <label class="list-group-item custom-radio">
                         <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
                         ${currentQuestion.answers[letter]}
                     </label>
