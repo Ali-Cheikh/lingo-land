@@ -209,12 +209,12 @@ function buildQuiz() {
                 (statement, index) =>
                     `<p>${statement.text}</p>
                     <div class="d-flex list-group">
-                        <label class="flex-column list-group-item custom-radio bg-danger text-light">
+                        <label class="flex-column list-group-item custom-radio ">
                             <input name="statement${index}" type="radio" value="false"> False
                         </label>
                     </div>
                     <div class="list-group">
-                        <label class="flex-column list-group-item custom-radio bg-success text-light">
+                        <label class="flex-column list-group-item custom-radio">
                             <input name="statement${index}" type="radio" value="true"> True
                         </label>
                     </div>`
@@ -290,26 +290,69 @@ function buildQuiz() {
             answers.push(
                 `
                 <div class="list-group">
-                    <label class="list-group-item custom-radio">
+                    <label class="list-group-item">
                         <input class="form-check-input me-1" type="radio" name="question${currentQuestionIndex}" value="${letter}">
-                        <span class="form-check-label">${currentQuestion.answers[letter]}</span>
+                        ${currentQuestion.answers[letter]}
                     </label>
                 </div>`
             );
         }
-
+    
         quizContainer.innerHTML = `
             <div class="question mb-4">
-                <audio controls>
-                    <source src="${currentQuestion.listening}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <h4 class="lead">${currentQuestion.question}</h4>
+            <center>
+                <div id="audio-player-container">
+                  <button id="play-icon" class="play-icon"></button>
+                  <span id="current-time" class="time">0:00</span>
+                  <input type="range" id="seek-slider" max="100" value="0">
+                  <span id="duration" class="time">0:00</span>
+                  <audio id="audio-player" src="${currentQuestion.listening}" type="audio/mpeg"></audio>
+                </div>
+            </center>
+                <p class="lead">${currentQuestion.question}</p>
                 <div class="answers">${answers.join('')}</div>
             </div>
         `;
+    
+        // Initialize the custom audio player after injecting the HTML
+        const audioPlayer = document.getElementById('audio-player');
+        const playIcon = document.getElementById('play-icon');
+        const currentTimeElement = document.getElementById('current-time');
+        const durationElement = document.getElementById('duration');
+        const seekSlider = document.getElementById('seek-slider');
+    
+        playIcon.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playIcon.classList.add('playing');
+            } else {
+                audioPlayer.pause();
+                playIcon.classList.remove('playing');
+            }
+        });
+    
+        audioPlayer.addEventListener('timeupdate', () => {
+            const currentTime = formatTime(audioPlayer.currentTime);
+            currentTimeElement.textContent = currentTime;
+            seekSlider.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        });
+    
+        audioPlayer.addEventListener('loadeddata', () => {
+            const duration = formatTime(audioPlayer.duration);
+            durationElement.textContent = duration;
+        });
+    
+        seekSlider.addEventListener('input', () => {
+            const seekTo = (seekSlider.value / 100) * audioPlayer.duration;
+            audioPlayer.currentTime = seekTo;
+        });
+    
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
     }
-
 
     updateCounter();
 }

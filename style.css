@@ -177,6 +177,63 @@ light color
 }
 
 /*===================================*/
+/*Voice looking like instagram voice message*/
+#audio-player-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 10px;
+    max-width: 300px;
+  }
+  
+  .play-icon {
+    width: 24px;
+    height: 24px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Octicons-playback-play.svg/16px-Octicons-playback-play.svg.png') no-repeat center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .play-icon.playing {
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Octicons-playback-pause.svg/16px-Octicons-playback-pause.svg.png') no-repeat center;
+    background-size: contain;
+  }
+  
+  .time {
+    display: none;
+  }
+  
+  #seek-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 5px;
+    background: #a4ec9e;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+  }
+  
+  #seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #ff4545;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  #volume-slider {
+    display: none; /* Hide the volume slider */
+  }
+  
+
+
+/*===================================*/
 /*tshu tshu trainnn!!*/
 
 .subway {
