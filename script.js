@@ -1,5 +1,14 @@
 const questions = [
     {
+        type: "organize-to-make-paragraph",
+        question: "Complete reorder the letters representing the sentences",
+        sentences: [
+            { sentence: "The sky is blue", correctWord: "blue" },
+            { text: "Grass is ___ in color.", correctWord: "green" }
+        ],
+        words: ["blue", "green"]
+    },
+    {
         type: "Listening",
         question: "What color is Mario's hat",
         listening:"rec/record1.mp3",
