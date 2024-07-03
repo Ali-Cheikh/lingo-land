@@ -1,12 +1,14 @@
 const questions = [
     {
         type: "organize-to-make-paragraph",
-        question: "Complete reorder the letters representing the sentences",
+        question: "Select the right order for the sentences to create a paragraph",
         sentences: [
-            { sentence: "The sky is blue", correctWord: "blue" },
-            { text: "Grass is ___ in color.", correctWord: "green" }
+            { sentence: "The weather is great", id: "A" },
+            { sentence: "Go out sometime and", id: "B" },
+            { sentence: "Eat in a restaurant", id: "C" },
+            { sentence: "Today we should", id: "D" }
         ],
-        words: ["blue", "green"]
+        correctOrder: ["1", "4", "2", "3"]
     },
     {
         type: "Listening",
@@ -19,14 +21,20 @@ const questions = [
         },
         correctAnswer: "a",
     },
+
     {
         type: "put-in-right-place",
         question: "Complete the sentences.",
         sentences: [
             { text: "The sky is ___.", correctWord: "blue" },
-            { text: "Grass is ___ in color.", correctWord: "green" }
+            { text: "Grass is ___ in color.", correctWord: "green" },
+            { text: "She couldn't ___ the meeting because she was feeling unwell.", correctWord: "attend" },
+            { text: "If I ___ you, I would apologize immediately.", correctWord: "were" },
+            { text: "He is interested ___ learning new languages.",correctWord: "in" },
+            { text: "It’s raining cats and ___ .", correctWord: "dogs" },
+            { text: "She takes ___ in her work.", correctWord: "pride" },
         ],
-        words: ["blue", "green"]
+        words: ["blue", "green", "attend", "were", "in", "dogs", "pride"],
     },
     {
         type: "image-choice",
@@ -46,27 +54,6 @@ const questions = [
             c: "Joseph Stalin",
         },
         correctAnswer: "a",
-    },
-    {
-        type: "put-in-right-place",
-        question: "Fill in the blanks:",
-        words: ["attend", "were", "in", "dogs", "pride"],
-        sentences: [
-            {
-                text: "She couldn't ___ the meeting because she was feeling unwell.",
-                correctWord: "attend",
-            },
-            {
-                text: "If I ___ you, I would apologize immediately.",
-                correctWord: "were",
-            },
-            {
-                text: "He is interested ___ learning new languages.",
-                correctWord: "in",
-            },
-            { text: "It’s raining cats and ___ .", correctWord: "dogs" },
-            { text: "She takes ___ in her work.", correctWord: "pride" },
-        ],
     },
     {
         type: "match-words",
@@ -92,13 +79,13 @@ const questions = [
             correctWords: ["Magbabao", "Folk", "Males", "Trousers", "find"]
         },
         options: [
-            [ "Magbabao", "that", "because"],
+            ["Magbabao", "that", "because"],
             ["Folk", "then", "but"],
             ["Males", "in", "to"],
             ["Trousers", "It", "It is"],
-            ["finds", "finding", "find"],
+            ["find", "finding", "finds"],
         ],
-        correctAnswers: ["but", "because", "in", "It's", "find"]
+        correctAnswers: ["Magbabao", "Folk", "Males", "Trousers", "find"]
     }
 ];
 
@@ -322,47 +309,78 @@ function buildQuiz() {
                 <div class="answers">${answers.join('')}</div>
             </div>
         `;
-    
-        // Initialize the custom audio player after injecting the HTML
-        const audioPlayer = document.getElementById('audio-player');
-        const playIcon = document.getElementById('play-icon');
-        const currentTimeElement = document.getElementById('current-time');
-        const durationElement = document.getElementById('duration');
-        const seekSlider = document.getElementById('seek-slider');
-    
-        playIcon.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playIcon.classList.add('playing');
-            } else {
-                audioPlayer.pause();
-                playIcon.classList.remove('playing');
-            }
-        });
-    
-        audioPlayer.addEventListener('timeupdate', () => {
-            const currentTime = formatTime(audioPlayer.currentTime);
-            currentTimeElement.textContent = currentTime;
-            seekSlider.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        });
-    
-        audioPlayer.addEventListener('loadeddata', () => {
-            const duration = formatTime(audioPlayer.duration);
-            durationElement.textContent = duration;
-        });
-    
-        seekSlider.addEventListener('input', () => {
-            const seekTo = (seekSlider.value / 100) * audioPlayer.duration;
-            audioPlayer.currentTime = seekTo;
-        });
-    
-        function formatTime(time) {
-            const minutes = Math.floor(time / 60);
-            const seconds = Math.floor(time % 60);
-            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }
-    }
+    // Initialize the custom audio player after injecting the HTML
+const audioPlayer = document.getElementById('audio-player');
+const playIcon = document.getElementById('play-icon');
+const currentTimeElement = document.getElementById('current-time');
+const durationElement = document.getElementById('duration');
+const seekSlider = document.getElementById('seek-slider');
 
+playIcon.addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        playIcon.classList.add('playing');
+    } else {
+        audioPlayer.pause();
+        playIcon.classList.remove('playing');
+    }
+});
+
+audioPlayer.addEventListener('timeupdate', () => {
+    const currentTime = formatTime(audioPlayer.currentTime);
+    currentTimeElement.textContent = currentTime;
+    seekSlider.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+});
+
+audioPlayer.addEventListener('loadeddata', () => {
+    const duration = formatTime(audioPlayer.duration);
+    durationElement.textContent = duration;
+});
+
+seekSlider.addEventListener('input', () => {
+    const seekTo = (seekSlider.value / 100) * audioPlayer.duration;
+    audioPlayer.currentTime = seekTo;
+});
+
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+        
+    }  else if (currentQuestion.type === "organize-to-make-paragraph") {
+        const tableRows = currentQuestion.sentences.map((sentence, index) => `
+            <tr>
+                <td><center>${sentence.id}</center></td>
+                <td>${sentence.sentence}</td>
+                <td>
+                    <select id="order-${sentence.id}">
+                        <option value="">Select order</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </td>
+            </tr>
+        `).join("");
+
+        quizContainer.innerHTML = `
+            <h2 class="my-4">${currentQuestion.question}</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><center>Label</center></th>
+                        <th><center>Sentence</center></th>
+                        <th>Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+        `;
+    }
     updateCounter();
 }
 
@@ -483,7 +501,25 @@ function showNextQuestion() {
         if (allCorrect) {
             numCorrect++; // Increment if all fill-in-the-blanks are correct
         }
-    } 
+    } else if (currentQuestion.type === "organize-to-make-paragraph") {
+        const userOrder = currentQuestion.sentences.map(sentence => {
+            return document.getElementById(`order-${sentence.id}`).value;
+        });
+
+        const correctOrder = currentQuestion.correctOrder;
+        let allCorrect = true;
+
+        for (let i = 0; i < correctOrder.length; i++) {
+            if (userOrder[i] !== correctOrder[i]) {
+                allCorrect = false;
+                break;
+            }
+        }
+
+        if (allCorrect) {
+            numCorrect++;
+        }
+    }
 
     currentQuestionIndex++;
 
