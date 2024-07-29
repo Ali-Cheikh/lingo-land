@@ -184,9 +184,54 @@
                 <span class="text-lg font-bold">$27.89 <span class="line-through text-muted">$30.99</span></span>
                 <button class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-3 py-1 rounded">Add to basket</button>
               </div>
-            </div>
-          </div>
+            </div></div>
+        </div>
+        <div class="cart">
+          <h2 class="text-lg font-semibold">Cart</h2>
+          <ul id="cart-list"></ul>
+          <p id="cart-total"></p>
+        </div>
       </div>
-    </div>
-  </body>
+    
+      <script>
+        // Initialize cart
+        let cart = [];
+    
+        // Add event listener to add-to-cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+          button.addEventListener('click', event => {
+            // Get book details
+            const bookTitle = event.target.parentNode.parentNode.querySelector('h2').textContent;
+            const bookPrice = event.target.parentNode.querySelector('span.text-lg.font-bold').textContent;
+    
+            // Add book to cart
+            cart.push({ title: bookTitle, price: bookPrice });
+    
+            // Update cart list
+            updateCartList();
+    
+            // Update cart total
+            updateCartTotal();
+          });
+        });
+    
+        // Update cart list
+        function updateCartList() {
+          const cartList = document.getElementById('cart-list');
+          cartList.innerHTML = '';
+          cart.forEach(book => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${book.title} - ${book.price}`;
+            cartList.appendChild(listItem);
+          });
+        }
+    
+        // Update cart total
+        function updateCartTotal() {
+          const cartTotal = document.getElementById('cart-total');
+          const total = cart.reduce((acc, book) => acc + parseFloat(book.price.replace('$', '')), 0);
+          cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+      </script>
+    </body>
 </html>
